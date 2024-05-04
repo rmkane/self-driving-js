@@ -18,7 +18,6 @@ class Car {
       this.sensor = new Sensor(this);
       this.brain = new NeuralNetwork([this.sensor.rayCount, 6, 4]);
     }
-
     this.controls = new Controls(controlType);
   }
 
@@ -26,7 +25,7 @@ class Car {
     if (!this.damaged) {
       this.#move();
       this.polygon = this.#createPolygon();
-      this.damaged = this.#accessDamage(roadBorders, traffic);
+      this.damaged = this.#assessDamage(roadBorders, traffic);
     }
     if (this.sensor) {
       this.sensor.update(roadBorders, traffic);
@@ -42,7 +41,7 @@ class Car {
     }
   }
 
-  #accessDamage(roadBorders, traffic) {
+  #assessDamage(roadBorders, traffic) {
     for (let i = 0; i < roadBorders.length; i++) {
       if (polysIntersect(this.polygon, roadBorders[i])) {
         return true;
@@ -61,20 +60,20 @@ class Car {
     const radius = Math.hypot(this.width, this.height) / 2;
     const alpha = Math.atan2(this.width, this.height);
     points.push({
-      x: this.x + Math.sin(this.angle - alpha) * radius,
-      y: this.y + Math.cos(this.angle - alpha) * radius,
+      x: this.x - Math.sin(this.angle - alpha) * radius,
+      y: this.y - Math.cos(this.angle - alpha) * radius,
     });
     points.push({
-      x: this.x + Math.sin(this.angle + alpha) * radius,
-      y: this.y + Math.cos(this.angle + alpha) * radius,
+      x: this.x - Math.sin(this.angle + alpha) * radius,
+      y: this.y - Math.cos(this.angle + alpha) * radius,
     });
     points.push({
-      x: this.x + Math.sin(Math.PI + this.angle - alpha) * radius,
-      y: this.y + Math.cos(Math.PI + this.angle - alpha) * radius,
+      x: this.x - Math.sin(Math.PI + this.angle - alpha) * radius,
+      y: this.y - Math.cos(Math.PI + this.angle - alpha) * radius,
     });
     points.push({
-      x: this.x + Math.sin(Math.PI + this.angle + alpha) * radius,
-      y: this.y + Math.cos(Math.PI + this.angle + alpha) * radius,
+      x: this.x - Math.sin(Math.PI + this.angle + alpha) * radius,
+      y: this.y - Math.cos(Math.PI + this.angle + alpha) * radius,
     });
     return points;
   }
@@ -118,7 +117,7 @@ class Car {
     this.y -= Math.cos(this.angle) * this.speed;
   }
 
-  draw(ctx, color) {
+  draw(ctx, color, drawSensor = false) {
     if (this.damaged) {
       ctx.fillStyle = "grey";
     } else {
@@ -131,7 +130,7 @@ class Car {
     }
     ctx.fill();
 
-    if (this.sensor) {
+    if (this.sensor && drawSensor) {
       this.sensor.draw(ctx);
     }
   }

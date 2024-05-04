@@ -10,7 +10,6 @@ function getIntersection(A, B, C, D) {
   if (bottom === 0) {
     return null;
   }
-
   const t = tTop / bottom;
   const u = uTop / bottom;
 

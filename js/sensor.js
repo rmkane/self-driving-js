@@ -27,7 +27,6 @@ class Sensor {
         roadBorders[i][0],
         roadBorders[i][1]
       );
-
       if (touch) {
         touches.push(touch);
       }
@@ -42,7 +41,6 @@ class Sensor {
           polygon[j],
           polygon[(j + 1) % polygon.length]
         );
-
         if (value) {
           touches.push(value);
         }
@@ -67,6 +65,7 @@ class Sensor {
           -this.raySpread / 2,
           this.rayCount === 1 ? 0.5 : i / (this.rayCount - 1)
         ) + this.car.angle;
+
       const start = { x: this.car.x, y: this.car.y };
       const end = {
         x: this.car.x - Math.sin(rayAngle) * this.rayLength,
@@ -77,21 +76,22 @@ class Sensor {
   }
 
   draw(ctx) {
-    for (let i = 0; i < this.rays.length; i++) {
+    for (let i = 0; i < this.rayCount; i++) {
       let end = this.rays[i][1];
       if (this.readings[i]) {
         end = this.readings[i];
       }
+
       ctx.beginPath();
-      ctx.strokeStyle = "yellow";
       ctx.lineWidth = 2;
+      ctx.strokeStyle = "yellow";
       ctx.moveTo(this.rays[i][0].x, this.rays[i][0].y);
       ctx.lineTo(end.x, end.y);
       ctx.stroke();
 
       ctx.beginPath();
-      ctx.strokeStyle = "black";
       ctx.lineWidth = 2;
+      ctx.strokeStyle = "black";
       ctx.moveTo(this.rays[i][1].x, this.rays[i][1].y);
       ctx.lineTo(end.x, end.y);
       ctx.stroke();

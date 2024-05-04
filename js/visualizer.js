@@ -18,7 +18,6 @@ class Visualizer {
         );
 
       ctx.setLineDash([7, 3]);
-
       Visualizer.drawLevel(
         ctx,
         network.levels[i],
@@ -37,8 +36,6 @@ class Visualizer {
 
     const { inputs, outputs, weights, biases } = level;
 
-    const nodeRadius = 18;
-
     for (let i = 0; i < inputs.length; i++) {
       for (let j = 0; j < outputs.length; j++) {
         ctx.beginPath();
@@ -50,15 +47,15 @@ class Visualizer {
       }
     }
 
+    const nodeRadius = 18;
     for (let i = 0; i < inputs.length; i++) {
       const x = Visualizer.#getNodeX(inputs, i, left, right);
       ctx.beginPath();
-      ctx.arc(x, bottom, nodeRadius, 0, 2 * Math.PI);
+      ctx.arc(x, bottom, nodeRadius, 0, Math.PI * 2);
       ctx.fillStyle = "black";
       ctx.fill();
-
       ctx.beginPath();
-      ctx.arc(x, bottom, nodeRadius * 0.6, 0, 2 * Math.PI);
+      ctx.arc(x, bottom, nodeRadius * 0.6, 0, Math.PI * 2);
       ctx.fillStyle = getRGBA(inputs[i]);
       ctx.fill();
     }
@@ -66,18 +63,17 @@ class Visualizer {
     for (let i = 0; i < outputs.length; i++) {
       const x = Visualizer.#getNodeX(outputs, i, left, right);
       ctx.beginPath();
-      ctx.arc(x, top, nodeRadius, 0, 2 * Math.PI);
+      ctx.arc(x, top, nodeRadius, 0, Math.PI * 2);
       ctx.fillStyle = "black";
       ctx.fill();
-
       ctx.beginPath();
-      ctx.arc(x, top, nodeRadius * 0.6, 0, 2 * Math.PI);
+      ctx.arc(x, top, nodeRadius * 0.6, 0, Math.PI * 2);
       ctx.fillStyle = getRGBA(outputs[i]);
       ctx.fill();
 
       ctx.beginPath();
       ctx.lineWidth = 2;
-      ctx.arc(x, top, nodeRadius * 0.8, 0, 2 * Math.PI);
+      ctx.arc(x, top, nodeRadius * 0.8, 0, Math.PI * 2);
       ctx.strokeStyle = getRGBA(biases[i]);
       ctx.setLineDash([3, 3]);
       ctx.stroke();
@@ -89,7 +85,7 @@ class Visualizer {
         ctx.textBaseline = "middle";
         ctx.fillStyle = "black";
         ctx.strokeStyle = "white";
-        ctx.font = `${nodeRadius * 1}px Arial`;
+        ctx.font = nodeRadius * 1 + "px Arial";
         ctx.fillText(outputLabels[i], x, top + nodeRadius * 0.1);
         ctx.lineWidth = 1;
         ctx.strokeText(outputLabels[i], x, top + nodeRadius * 0.1);
