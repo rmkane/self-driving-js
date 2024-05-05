@@ -46,3 +46,11 @@ function getRGBA(value) {
   const alpha = Math.abs(value);
   return `rgba(${red}, ${green}, ${blue}, ${alpha})`;
 }
+
+function randomInt(min, max) {
+  return Math.floor(Math.random() * (max - min + 1) + min);
+}
+
+function getRandomColor() {
+  return `hsl(${randomInt(290, 550)}, 100%, 50%)`;
+}
